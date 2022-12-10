@@ -17,8 +17,9 @@ public:
 	void KeyDown( int key ) { /* implement if you want to handle keys */ }
 private:
 	Surface* screen;
-	int mouseX, mouseY, click, release;
-	int ballV, ballX, ballY;
+	int mouseX, mouseY, click, release;//mouse variables
+	double delx, dely, angle, xvel, yvel; //velocity and angle calculation variables
+	int ballX = 300, ballY = 300; //x and y for ballz
 };
 
 }; // namespace Tmpl8

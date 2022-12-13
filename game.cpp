@@ -4,6 +4,8 @@
 #include <iostream>
 #include <math.h>
 #include <SDL2-2.0.3/include/SDL_stdinc.h>
+#include "template.h"
+#include "windows.h"
 namespace Tmpl8
 {
 	// -----------------------------------------------------------
@@ -12,7 +14,15 @@ namespace Tmpl8
 	void Game::Init()
 	{
 	}
-
+	void Circle(Surface* s, float x, float y, float r)
+	{
+		for (int i = 0; i < 64; i++)
+		{
+			float r1 = (float)i * PI / 32, r2 = (float)(i + 1) * PI / 32;
+			s->Line(x - r * sinf(r1), y - r * cosf(r1),
+				x - r * sinf(r2), y - r * cosf(r2), 0xff0000);
+		}
+	}
 	// -----------------------------------------------------------
 	// Close down application
 	// -----------------------------------------------------------
@@ -30,14 +40,15 @@ namespace Tmpl8
 	void Game::Tick(float deltaTime)
 	{
 		screen->Clear(0); //clear the graphics window
-		ball.Draw(screen, ballX, ballY); //draw the ball
+		//ball.Draw(screen, ballX, ballY); //draw the ball
+		Circle(screen, ballX, ballY, ballR);
 
 		if (click && !release) //when mouse is held down
 		{
 			screen->Print("Mouseclick!", 10, 10, 0xff0000);
 
-			delx = (mouseX - ballX + 25); //measures delta x
-			dely = (mouseY - ballY + 25); //measures delta y
+			delx = (mouseX - ballX + ballR /2); //measures delta x
+			dely = (mouseY - ballY + ballR /2); //measures delta y
 			angle = atan(dely / delx); //calculates the angle
 
 			//calculates the correct velocity 
@@ -53,7 +64,8 @@ namespace Tmpl8
 			}
 
 			//calculates the speed using pytagoras 
-			if (delx < 0 || dely < 0) {
+			if (delx < 0 || dely < 0) 
+			{
 				xpyt = delx * -1;
 				ypyt = dely * -1;
 			}
@@ -67,13 +79,15 @@ namespace Tmpl8
 			xypyt = sqrt(xpyt + ypyt) / 200;
 
 			//max and min speed
-			if (xypyt > maxSpeed) {
+			if (xypyt > maxSpeed) 
+			{
 				xypyt = maxSpeed;
 			}
-			if (xypyt < minSpeed) {
+			if (xypyt < minSpeed) 
+			{
 				xypyt = minSpeed;
 			}
-			screen->Line(ballX + 25, ballY + 25, mouseX, mouseY, 0xff0000); //line between ball and mouse
+			screen->Line(ballX + (ballR /PI)/32, ballY + (ballR /PI)/32, mouseX, mouseY, 0xff0000); //line between ball and mouse
 		}
 
 		if (release) //on release
@@ -86,6 +100,22 @@ namespace Tmpl8
 
 		if (click == 0) //during release
 		{
+			if (ballX - ballR < 0) {
+				xvel *= -1;
+				ballX = 0 + ballR;
+			}
+			if (ballX + ballR > ScreenWidth) {
+				xvel *= -1;
+				ballX = ScreenWidth- ballR;
+			}
+			if (ballY - ballR < 0) {
+				yvel *= -1;
+				ballY = 0 + ballR;
+			}
+			if (ballY + ballR > ScreenHeight) {
+				yvel *= -1;
+				ballY = ScreenHeight - ballR;
+			}
 			ballX += xvel;
 			ballY += yvel;
 		}

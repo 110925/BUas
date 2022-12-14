@@ -49,19 +49,11 @@ namespace Tmpl8
 
 			delx = (mouseX - ballX + ballR /2); //measures delta x
 			dely = (mouseY - ballY + ballR /2); //measures delta y
-			angle = atan(dely / delx); //calculates the angle
+			angle = atan2(dely , delx); //calculates the angle
 
 			//calculates the correct velocity 
-			if (delx >= 0)
-			{
-				xvel = cos(angle) * 5;
-				yvel = sin(angle) * 5;
-			}
-			else
-			{
-				xvel = cos(angle) * -5;
-				yvel = sin(angle) * -5;
-			}
+			xvel = cos(angle) * 5;
+			yvel = sin(angle) * 5;
 
 			//calculates the speed using pytagoras 
 			if (delx < 0 || dely < 0) 

@@ -72,17 +72,14 @@ namespace Tmpl8
 		//ball.y = 100;
 		//ball.r = 20;
 
-		float x = ball.x;
-		float y = ball.y = 100;
-		float r = ball.r = 20;
-		float da = ball.da;
-		float db = ball.db; 
-		float dc =   ball.dc;
-		ball.setVar(x,y,r);
-		for (int i = 0; i < 1200; i+=200)
+		ball.y = 100;
+		ball.r = 20;
+
+		for (int i = 50; i < ScreenWidth; i+=300)
 		{
-			//ball.x += i;
-			ball.setVar(ball.x += i, ball.y, ball.r);
+			for (int j = 50; j < ScreenHeight; j+=300)
+			{
+			ball.setVar( i, j, ball.r);
 			ball.Show(screen, ball.x, ball.y, ball.r);
 			ball.da = ballX - ball.x, ball.db = ballY - ball.y;
 			ball.da = pow(ball.da, 2);
@@ -90,31 +87,28 @@ namespace Tmpl8
 			ball.dc = sqrt(ball.da + ball.db);
 			if (ball.dc < ball.r + ballR) {
 				if (xvel < 0) {
-					ballX++;
+					ballX+=3;
 				}
 				if (xvel > 0) {
-					ballX--;
+					ballX-=3;
 				}
 				if (yvel < 0) {
-					ballY++;
+					ballY+= 3;
 				}
 				if (yvel > 0) {
-					ballX--;
+					ballX -= 3;
 				}
 				xvel *= -1;
 				yvel *= -1;
 			}
+			}
+
 		}
 		
 
 		//ball.Draw(screen, ballX, ballY); //draw the ball
 		Circle(screen, ballX, ballY, ballR);
 
-
-
-
-
-		
 			if (click && !release) //when mouse is held down
 			{
 				screen->Print("Mouseclick!", 10, 10, 0xff0000);

@@ -59,9 +59,6 @@ namespace Tmpl8
 					x - r * sinf(r2), y - r * cosf(r2), 0xff0000);
 			}
 		}
-		void Hit() {
-
-		}
 	};
 
 	void Game::Tick(float deltaTime)
@@ -69,38 +66,32 @@ namespace Tmpl8
 		screen->Clear(0); //clear the graphics window
 		Ball ball{};
 
-		//ball.y = 100;
-		//ball.r = 20;
-
-		ball.y = 100;
 		ball.r = 20;
-
 		for (int i = 50; i < ScreenWidth; i+=300)
 		{
 			for (int j = 50; j < ScreenHeight; j+=300)
 			{
-			ball.setVar( i, j, ball.r);
-			ball.Show(screen, ball.x, ball.y, ball.r);
-			ball.da = ballX - ball.x, ball.db = ballY - ball.y;
-			ball.da = pow(ball.da, 2);
-			ball.db = pow(ball.db, 2);
-			ball.dc = sqrt(ball.da + ball.db);
-			if (ball.dc < ball.r + ballR) {
-				if (xvel < 0) {
-					ballX+=3;
+				ball.setVar( i, j, ball.r);
+				ball.Show(screen, ball.x, ball.y, ball.r);
+				ball.da = ballX - ball.x;
+				ball.db = ballY - ball.y;
+				ball.dc = sqrt(ball.da * ball.da + ball.db * ball.db);
+				if (ball.dc < ball.r + ballR) {
+					if (xvel < 0) {
+						ballX+=3;
+					}
+					if (xvel > 0) {
+						ballX-=3;
+					}
+					if (yvel < 0) {
+						ballY+= 3;
+					}
+					if (yvel > 0) {
+						ballX -= 3;
+					}
+					xvel *= -1;
+					yvel *= -1;
 				}
-				if (xvel > 0) {
-					ballX-=3;
-				}
-				if (yvel < 0) {
-					ballY+= 3;
-				}
-				if (yvel > 0) {
-					ballX -= 3;
-				}
-				xvel *= -1;
-				yvel *= -1;
-			}
 			}
 
 		}
@@ -109,73 +100,73 @@ namespace Tmpl8
 		//ball.Draw(screen, ballX, ballY); //draw the ball
 		Circle(screen, ballX, ballY, ballR);
 
-			if (click && !release) //when mouse is held down
+		if (click && !release) //when mouse is held down
+		{
+			screen->Print("Mouseclick!", 10, 10, 0xff0000);
+
+			delx = (mouseX - ballX + ballR / 2); //measures delta x
+			dely = (mouseY - ballY + ballR / 2); //measures delta y
+			angle = atan2(dely, delx); //calculates the angle
+
+			//calculates the correct velocity 
+			xvel = cos(angle) * 5;
+			yvel = sin(angle) * 5;
+
+			//calculates the speed using pytagoras 
+			if (delx < 0 || dely < 0)
 			{
-				screen->Print("Mouseclick!", 10, 10, 0xff0000);
-
-				delx = (mouseX - ballX + ballR / 2); //measures delta x
-				dely = (mouseY - ballY + ballR / 2); //measures delta y
-				angle = atan2(dely, delx); //calculates the angle
-
-				//calculates the correct velocity 
-				xvel = cos(angle) * 5;
-				yvel = sin(angle) * 5;
-
-				//calculates the speed using pytagoras 
-				if (delx < 0 || dely < 0)
-				{
-					xpyt = delx * -1;
-					ypyt = dely * -1;
-				}
-				else
-				{
-					xpyt = delx;
-					ypyt = dely;
-				}
-				//xpyt = pow(xpyt, 2);
-				//ypyt = pow(ypyt, 2);
-				xypyt = sqrt(pow(xpyt, 2) + pow(ypyt, 2)) / 200;
-
-				//max and min speed
-				if (xypyt > maxSpeed)
-				{
-					xypyt = maxSpeed;
-				}
-				if (xypyt < minSpeed)
-				{
-					xypyt = minSpeed;
-				}
-				screen->Line(ballX + (ballR / PI) / 32, ballY + (ballR / PI) / 32, mouseX, mouseY, 0xff0000); //line between ball and mouse
+				xpyt = delx * -1;
+				ypyt = dely * -1;
 			}
-
-			if (release) //on release
+			else
 			{
-				click = 0;
-				release = 0;
-				xvel *= xypyt;
-				yvel *= xypyt;
+				xpyt = delx;
+				ypyt = dely;
 			}
+			//xpyt = pow(xpyt, 2);
+			//ypyt = pow(ypyt, 2);
+			xypyt = sqrt(xpyt * xpyt + ypyt * ypyt) / 200;
 
-			if (click == 0) //during release
+			//max and min speed
+			if (xypyt > maxSpeed)
 			{
-				if (ballX - ballR < 0) {
-					xvel *= -1;
-					ballX = 0 + ballR;
-				}
-				if (ballX + ballR > ScreenWidth) {
-					xvel *= -1;
-					ballX = ScreenWidth - ballR;
-				}
-				if (ballY - ballR < 0) {
-					yvel *= -1;
-					ballY = 0 + ballR;
-				}
-				if (ballY + ballR > ScreenHeight) {
-					yvel *= -1;
-					ballY = ScreenHeight - ballR;
-				}
-				ballX += xvel;
-				ballY += yvel;
+				xypyt = maxSpeed;
 			}
+			if (xypyt < minSpeed)
+			{
+				xypyt = minSpeed;
+			}
+			screen->Line(ballX + (ballR / PI) / 32, ballY + (ballR / PI) / 32, mouseX, mouseY, 0xff0000); //line between ball and mouse
+		}
+
+		if (release) //on release
+		{
+			click = 0;
+			release = 0;
+			xvel *= xypyt;
+			yvel *= xypyt;
+		}
+
+		if (click == 0) //during release
+		{
+			if (ballX - ballR < 0) {
+				xvel *= -1;
+				ballX = 0 + ballR;
+			}
+			if (ballX + ballR > ScreenWidth) {
+				xvel *= -1;
+				ballX = ScreenWidth - ballR;
+			}
+			if (ballY - ballR < 0) {
+				yvel *= -1;
+				ballY = 0 + ballR;
+			}
+			if (ballY + ballR > ScreenHeight) {
+				yvel *= -1;
+				ballY = ScreenHeight - ballR;
+			}
+			ballX += xvel;
+			ballY += yvel;
+		}
 		}
 	};

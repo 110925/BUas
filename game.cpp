@@ -67,9 +67,9 @@ namespace Tmpl8
 		Ball ball{};
 
 		ball.r = 20;
-		for (int i = 50; i < ScreenWidth; i+=300)
+		for (int i = enemyX; i < ScreenWidth; i+=300)
 		{
-			for (int j = 50; j < ScreenHeight; j+=300)
+			for (int j = ememyY; j < ScreenHeight; j+=300)
 			{
 				ball.setVar( i, j, ball.r);
 				ball.Show(screen, ball.x, ball.y, ball.r);
@@ -78,16 +78,16 @@ namespace Tmpl8
 				ball.dc = sqrt(ball.da * ball.da + ball.db * ball.db);
 				if (ball.dc < ball.r + ballR) {
 					if (xvel < 0) {
-						ballX+=3;
+						enemyX +=3;
 					}
 					if (xvel > 0) {
-						ballX-=3;
+						enemyX -=3;
 					}
 					if (yvel < 0) {
-						ballY+= 3;
+						ememyY += 3;
 					}
 					if (yvel > 0) {
-						ballX -= 3;
+						ememyY -= 3;
 					}
 					xvel *= -1;
 					yvel *= -1;
@@ -165,8 +165,8 @@ namespace Tmpl8
 				yvel *= -1;
 				ballY = ScreenHeight - ballR;
 			}
-			ballX += xvel;
-			ballY += yvel;
+			enemyX -= xvel;
+			ememyY -= yvel;
 		}
 		}
 	};

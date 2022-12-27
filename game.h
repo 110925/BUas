@@ -19,7 +19,8 @@ private:
 	Surface* screen;
 	int mouseX, mouseY, click, release;//mouse variables
 	double delx, dely, angle, xvel, yvel, xpyt, ypyt, xypyt, minSpeed = 0.5, maxSpeed = 4; //velocity and angle calculation variables
-	int ballX = 300, ballY = 300, ballR = 40; //x and y for ballz
+	int ballX = 1280/2, ballY = 720/2, ballR = 40; //x and y for ballz
+	int enemyX = 50, ememyY = 50;
 };
 
 }; // namespace Tmpl8

@@ -40,17 +40,20 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 
 	class Ball {
-
+		Game game;
 	public:
 		float x, y, r;
 		float da, db, dc;
+		//int enemyX = 50, ememyY = 50;
+		//int ballX = 1280 / 2, ballY = 720 / 2, ballR = 40;
+		//double xvel, yvel;
 
 		void setVar(float x, float y, float r) {
 			this->x = x;
 			this->y = y;
 			this->r = r;
 		}
-		void Show(Surface* s,  float x, float y, float r)
+		void Show(Surface* s, float x, float y, float r)
 		{
 			for (int i = 0; i < 64; i++)
 			{
@@ -59,20 +62,31 @@ namespace Tmpl8
 					x - r * sinf(r2), y - r * cosf(r2), 0xff0000);
 			}
 		}
+		bool Hit(float x, float y, float r) {
+			da = game.ballX - x;
+			db = game.ballY - y;
+			dc = sqrt(da * da + db * db);
+			if (dc < r + game.ballR) {
+				return 1;
+			}
+			return 0;
+		}
 	};
 
 	void Game::Tick(float deltaTime)
 	{
 		screen->Clear(0); //clear the graphics window
-		Ball ball{};
+		Ball ball;
+		vector < Ball > enemies;
 
 		ball.r = 20;
-		for (int i = enemyX; i < ScreenWidth; i+=300)
+		for (int i = enemyX; i < ScreenWidth; i += 300)
 		{
-			for (int j = ememyY; j < ScreenHeight; j+=300)
+			for (int j = ememyY; j < ScreenHeight; j += 300)
 			{
-				ball.setVar( i, j, ball.r);
-				ball.Show(screen, ball.x, ball.y, ball.r);
+				ball.setVar(i, j, ball.r);
+				enemies.push_back(ball);
+				/*ball.Show(screen, ball.x, ball.y, ball.r);
 				ball.da = ballX - ball.x;
 				ball.db = ballY - ball.y;
 				ball.dc = sqrt(ball.da * ball.da + ball.db * ball.db);
@@ -91,11 +105,18 @@ namespace Tmpl8
 					}
 					xvel *= -1;
 					yvel *= -1;
+					enemies.clear();
 				}
+				std::cout << "size:"<< enemies.size();*/
 			}
-
 		}
-		
+		for (auto& ball : enemies)
+			if (ball.Hit(ball.x, ball.y, ball.r)) {
+				enemies.erase(enemies.begin() + 1);
+				//xvel *= -1;
+				//yvel *= -1;
+			};
+		for (auto& ball : enemies) ball.Show(screen, ball.x, ball.y, ball.r);
 
 		//ball.Draw(screen, ballX, ballY); //draw the ball
 		Circle(screen, ballX, ballY, ballR);
@@ -168,5 +189,5 @@ namespace Tmpl8
 			enemyX -= xvel;
 			ememyY -= yvel;
 		}
-		}
-	};
+	}
+};

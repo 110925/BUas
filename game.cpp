@@ -55,6 +55,7 @@ namespace Tmpl8
 			this->y = y;
 			this->r = r;
 		}
+		//Show enemies
 		void Show(Surface* s, float x, float y, float r)
 		{
 			for (int i = 0; i < 64; i++)
@@ -64,6 +65,7 @@ namespace Tmpl8
 					x - r * sinf(r2), y - r * cosf(r2), 0xff0000);
 			}
 		}
+		//When platyer hits enemy
 		bool Hit(float x, float y, float r) {
 			da = game.ballX - x;
 			db = game.ballY - y;
@@ -102,7 +104,7 @@ namespace Tmpl8
 				}
 			}
 			//Detect which enemy is hit and which one to delete
-			for (auto it = enemies.begin(); it != enemies.end(); ++it)
+			for (auto it = enemies.begin(); it != enemies.end();)
 			{
 				auto& ball = *it;
 
@@ -110,17 +112,21 @@ namespace Tmpl8
 				{
 					it = enemies.erase(it);
 					scoreInt += 100;
-					yvel *= -1;
-					xvel *= -1;
+					//yvel *= -1;
+					//xvel *= -1;
 					//if (yvel > 0) {
 					//	yvel *= -1.1;
 					//}
 					//if (yvel < 0) {
 					//	yvel *= 1.1;
 					//}
-					shakeDuration = 20;
-					shakeTimer = 20;
+					//shakeDuration = 20;
+					//shakeTimer = 20;
 					canShoot = true;
+				}
+				else
+				{
+					++it;
 				}
 
 			}
@@ -211,7 +217,7 @@ namespace Tmpl8
 
 			if (click == 0 || !canShoot) //during release
 			{
-				if (ballX - ballR < 0) {
+				/*if (ballX - ballR < 0) {
 					xvel *= -1;
 					ballX = 0 + ballR;
 				}
@@ -226,10 +232,10 @@ namespace Tmpl8
 				if (ballY + ballR > ScreenHeight) {
 					yvel *= -1;
 					ballY = ScreenHeight - ballR;
-				}
-				yvel += 0.03;
-				enemyX -= xvel;
-				ememyY -= yvel;
+				}*/
+				yvel += 0.03; //Gravity
+				enemyX -= xvel; //camX
+				ememyY -= yvel; //camY
 			}
 		}
 	}

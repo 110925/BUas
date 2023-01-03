@@ -1,9 +1,23 @@
 #pragma once
 #include <math.h>
+#include <vector>
 
 namespace Tmpl8 {
-
-class Surface;
+	class Surface;
+	class Game;
+	class Ball {
+		Game* game;
+	public:
+		float x, y, r;
+		float da, db, dc;
+		int type;
+		Ball(Game*);
+		void setVar(float x, float y, float r);
+		//Show enemies
+		void Show(Surface* s, float x, float y, float r);
+		//When platyer hits enemy
+		bool Hit();
+	};
 class Game
 {
 public:
@@ -20,16 +34,19 @@ public:
 	int ballX = 1280 / 2, ballY = 720 / 2, ballR = 40; //x and y for ballz
 	int enemyX = 150, ememyY = -500;
 	bool ballsAdded = false;
+	int gameState = 0; //gameState for menu, game and endscreen	
+
 
 private:
 	Surface* screen;
 	int mouseX, mouseY, click, release;//mouse variables
-	int gameState = 0; //gameState for menu, game and endscreen
 	float shakeIntensity = 8; // intensity of the shake
 	int shakeDuration = 0; // duration of the shake, in frames
 	int shakeTimer = 0; // make the shake less intense every frame
 	int scoreInt = 0;
 	bool canShoot = true;
+	void Kill();
+	std::vector<Ball> enemies;
 
 };
 

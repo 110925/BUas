@@ -16,16 +16,14 @@ namespace Tmpl8
 	// -----------------------------------------------------------
 	// Initialize the application
 	// -----------------------------------------------------------
-	void Game::Init()
-	{
-	}
+
 	void Circle(Surface* s, float x, float y, float r)
 	{
 		for (int i = 0; i < 64; i++)
 		{
 			float r1 = (float)i * PI / 32, r2 = (float)(i + 1) * PI / 32;
 			s->Line(x - r * sinf(r1), y - r * cosf(r1),
-				x - r * sinf(r2), y - r * cosf(r2), 0xff0000);
+				x - r * sinf(r2), y - r * cosf(r2), 0xffffff);
 		}
 	}
 	// -----------------------------------------------------------
@@ -44,49 +42,75 @@ namespace Tmpl8
 
 
 	//Class for enemy balls;
-	class Ball {
-		Game game;
-	public:
-		float x, y, r;
-		float da, db, dc;
-
-		void setVar(float x, float y, float r) {
+	Ball::Ball(Game* game) 
+	{
+		this->game = game;
+	}
+		void Ball::setVar(float x, float y, float r) {
 			this->x = x;
 			this->y = y;
 			this->r = r;
 		}
 		//Show enemies
-		void Show(Surface* s, float x, float y, float r)
+		void Ball::Show(Surface* s, float x, float y, float r)
 		{
-			for (int i = 0; i < 64; i++)
-			{
-				float r1 = (float)i * PI / 32, r2 = (float)(i + 1) * PI / 32;
-				s->Line(x - r * sinf(r1), y - r * cosf(r1),
-					x - r * sinf(r2), y - r * cosf(r2), 0xff0000);
+			if (type <= 20) {
+				for (int i = 0; i < 64; i++)
+				{
+					float r1 = (float)i * PI / 32, r2 = (float)(i + 1) * PI / 32;
+					s->Line(x - r * sinf(r1), y - r * cosf(r1),
+						x - r * sinf(r2), y - r * cosf(r2), 0x00ff00);
+				}
+			}
+			if (type > 20) {
+				for (int i = 0; i < 64; i++)
+				{
+					float r1 = (float)i * PI / 32, r2 = (float)(i + 1) * PI / 32;
+					s->Line(x - r * sinf(r1), y - r * cosf(r1),
+						x - r * sinf(r2), y - r * cosf(r2), 0xff0000);
+				}
 			}
 		}
+
 		//When platyer hits enemy
-		bool Hit(float x, float y, float r) {
-			da = game.ballX - x;
-			db = game.ballY - y;
+		bool Ball::Hit() {
+			da = game->ballX - x;
+			db = game->ballY - y;
 			dc = sqrt(da * da + db * db);
-			if (dc < r + game.ballR) {
+			if (dc < r + game->ballR) {
 				return 1;
 			}
 			return 0;
 		}
-	};	
-
+	void Game::Init()
+	{
+		Ball ball(this);
+		for (int i = enemyX; i < enemyX + 2000; i += 300)
+		{
+			for (int j = ememyY; j < ememyY + 900; j += 300)
+			{
+				ball.setVar(i, j, ball.r);
+				ball.type = rand() % 25 + 1;
+				enemies.push_back(ball);
+			}
+		}
+	}
+	void Game::Kill()
+	{
+		gameState = 0;
+		enemyX = 150, ememyY = -500;
+		yvel = 0, xvel = 0;
+	}
 	void Game::Tick(float deltaTime)
 	{
 		screen->Clear(0); //clear the graphics window
-		Ball ball;
-		vector < Ball > enemies;
+		Ball ball(this);
 
 		if (gameState == 0) {
 			screen->Print("Click anywhere to play!", ScreenWidth / 2-100, ScreenHeight/2-100, 0xffffff);
 			if (click) {
 				gameState = 1; //To the "game" gameState
+				canShoot = false;
 			}
 		}
 
@@ -94,35 +118,35 @@ namespace Tmpl8
 			ball.r = 20;
 
 			//Enemy location and pushback to vector
-			for (int i = enemyX; i < enemyX + 2000; i += 300)
-			{
-				for (int j = ememyY; j < ememyY + 900; j += 300)
-				{
-					ball.setVar(i, j, ball.r);
-					enemies.push_back(ball);
 
-				}
-			}
 			//Detect which enemy is hit and which one to delete
 			for (auto it = enemies.begin(); it != enemies.end();)
 			{
 				auto& ball = *it;
 
-				if (ball.Hit(ball.x, ball.y, ball.r))
+				if (ball.Hit())
 				{
 					it = enemies.erase(it);
 					scoreInt += 100;
 					//yvel *= -1;
 					//xvel *= -1;
-					//if (yvel > 0) {
-					//	yvel *= -1.1;
+
+					//if (ball.type <= 20)
+					//{
+						if (yvel > 0) {
+							yvel *= -1.1;
+						}
+						if (yvel < 0) {
+							yvel *= 1.1;
+						}
 					//}
-					//if (yvel < 0) {
-					//	yvel *= 1.1;
-					//}
+					if (ball.type > 20)
+					{
+						//Kill();
+					}
+					canShoot = true;
 					//shakeDuration = 20;
 					//shakeTimer = 20;
-					canShoot = true;
 				}
 				else
 				{
@@ -143,7 +167,7 @@ namespace Tmpl8
 				shakeTimer--;
 			}
 
-			screen->Line(enemyX-2000, ememyY + 1000, enemyX + 2000, ememyY + 1000, 0xff0000);//floor
+			screen->Line(enemyX-2000, ememyY + 1000, enemyX + 2000, ememyY + 1000, 0xff0000);//lava
 			screen->Line(enemyX, ememyY+1000, enemyX+1000, ememyY+1000, 0xffffff);//floor
 
 			//On hit with the floor;
@@ -155,8 +179,7 @@ namespace Tmpl8
 
 			//When touch lava
 			if (ballY + ballR > ememyY + 1000 && ballX < enemyX || ballY + ballR > ememyY + 1000 && ballX > enemyX + 1000) { 
-				gameState = 0;
-				enemyX = 150, ememyY = -500;
+				Kill();
 			}
 
 			//Player

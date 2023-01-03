@@ -98,7 +98,6 @@ namespace Tmpl8
 				{
 					ball.setVar(i, j, ball.r);
 					enemies.push_back(ball);
-
 				}
 			}
 			//Detect which enemy is hit and which one to delete
@@ -110,19 +109,18 @@ namespace Tmpl8
 				{
 					it = enemies.erase(it);
 					scoreInt += 100;
-					yvel *= -1;
-					xvel *= -1;
+					//yvel *= -1;
+					//xvel *= -1;
 					//if (yvel > 0) {
 					//	yvel *= -1.1;
 					//}
 					//if (yvel < 0) {
 					//	yvel *= 1.1;
 					//}
-					shakeDuration = 20;
-					shakeTimer = 20;
+					//shakeDuration = 20;
+					//shakeTimer = 20;
 					canShoot = true;
 				}
-
 			}
 			//Show Enemies
 			for (auto& ball : enemies) ball.Show(screen, ball.x, ball.y, ball.r);
@@ -138,7 +136,7 @@ namespace Tmpl8
 			}
 
 			screen->Line(enemyX-2000, ememyY + 1000, enemyX + 2000, ememyY + 1000, 0xff0000);//floor
-			screen->Line(enemyX, ememyY+1000, enemyX+1000, ememyY+1000, 0xffffff);//floor
+			screen->Line(enemyX, ememyY+1000, enemyX+1000, ememyY+1000, 0xffffff);//lava
 
 			//On hit with the floor;
 			if (ballY + ballR > ememyY + 1000 && ballX > enemyX && ballX < enemyX+1000) { 
@@ -211,7 +209,7 @@ namespace Tmpl8
 
 			if (click == 0 || !canShoot) //during release
 			{
-				if (ballX - ballR < 0) {
+				/*if (ballX - ballR < 0) {
 					xvel *= -1;
 					ballX = 0 + ballR;
 				}
@@ -226,10 +224,11 @@ namespace Tmpl8
 				if (ballY + ballR > ScreenHeight) {
 					yvel *= -1;
 					ballY = ScreenHeight - ballR;
-				}
-				yvel += 0.03;
-				enemyX -= xvel;
-				ememyY -= yvel;
+				}*/
+
+				yvel += 0.03; //Gravity
+				enemyX -= xvel; //cameraMoveX
+				ememyY -= yvel; //cameraMoveY
 			}
 		}
 	}

@@ -33,7 +33,7 @@ namespace Tmpl8 {
 		void KeyDown(int key) { /* implement if you want to handle keys */ }
 		double delx, dely, angle, xvel, yvel, xpyt, ypyt, xypyt, minSpeed = 0.5, maxSpeed = 4; //velocity and angle calculation variables
 		int ballX = 1280 / 2, ballY = 720 / 2, ballR = 30; //x and y for ballz
-		int enemyX = 150, ememyY = -500;
+		int enemyX = 150, ememyY = -550;
 		bool ballsAdded = false;
 		int gameState = 0; //gameState for menu, game and endscreen	
 		Surface* screen;
@@ -45,9 +45,9 @@ namespace Tmpl8 {
 		int shakeDuration = 0; // duration of the shake, in frames
 		int shakeTimer = 0; // make the shake less intense every frame
 		int scoreInt = 0;
+		int highScoreInt = 0;
 		bool canShoot = true;
 		void Kill();
-		void DrawHealth(float x, float y);
 		std::vector<Ball> enemies;
 		float Health = 300;
 	};

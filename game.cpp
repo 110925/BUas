@@ -55,7 +55,6 @@ namespace Tmpl8
 		this->y = yOrignal + yOffset;
 		this->r = rOrignal + rOffset;
 	}
-
 	//Show enemies
 	void Ball::Show()
 	{
@@ -96,26 +95,23 @@ namespace Tmpl8
 			for (int j = ememyY-2000; j < ememyY + 900; j += rand() % 300 +250)
 			{
 				Ball ball(this, i, j, 15);
-				ball.type = rand() % 5 + 1;
+				ball.type = rand() % 15 + 1;
 				enemies.push_back(ball);
 			}
 		}
 	}
 	void Game::Kill()
 	{
+		if (scoreInt > highScoreInt)
+		{
+			highScoreInt = scoreInt;
+		}
 		gameState = 0;
 		enemyX = 150, ememyY = -500;
 		yvel = 0, xvel = 0;
 		Health = 300;
 		scoreInt = 0;
 		enemies.clear();
-	}
-	void Game::DrawHealth(float x, float y) 
-	{
-		for (int i = 0; i < 20; i++)
-		{
-			screen->Line(x, y + i, x + Health, y + i, 0xff0000);
-		}
 	}
 	void Game::Tick(float deltaTime)
 	{
@@ -129,40 +125,43 @@ namespace Tmpl8
 					Init();
 				}
 			}
+			screen->Print("Your Highscore is:", ScreenWidth / 2 - 100, ScreenHeight / 2 - 130, 0xff0000);
+			string str = to_string(highScoreInt);
+			char* highScore = const_cast<char*>(str.data());
+			screen->Print(highScore, ScreenWidth / 2 +10, ScreenHeight / 2 - 130, 0xff0000);
 		}
 		cout << yvel;
 		if (gameState == 1) {
 
-			//DrawHealth(ScreenWidth/2-150,100);
 			Health-=0.3; //Health constantly going down
 			screen->Bar(ScreenWidth/2 - 150,10, (ScreenWidth / 2 - 150)+Health,40,0xff0000);
 			//Detect which enemy is hit and which one to delete
 			for (auto it = enemies.begin(); it != enemies.end();)
 			{
 				auto& ball = *it;
-				if (ball.type == 1) {
+
+				if (ball.type <= 3) {//Killer enemy
 					ball.color = 0xff0000;
 				}
-				if(ball.type >= 2){
+				if(ball.type >= 4 && ball.type <=13) {//Normal enemy
 					ball.color = 0x00ff00;
 				}
+				if (ball.type == 14) {//Golden enemy
+					ball.color = 0xffff00;
+				}
+				if (ball.type == 15) { //Healer enemy
+					ball.color = 0xffffff;
+				}
+
 				if (ball.Hit())
 				{
 
-					if (ball.type == 1)
+					if (ball.type <= 3)
 					{
 						Kill();
 					}
 
-					if (enemies.size() > 0) {
-						it = enemies.erase(it);
-					}
-					else
-					{
-						it = enemies.begin();
-					}
-
-					if (ball.type >= 2)
+					if (ball.type >= 4 && ball.type <= 15)
 					{
 						if (yvel > 0) {
 							yvel *= -1;
@@ -171,16 +170,32 @@ namespace Tmpl8
 								yvel -= 3;
 							}
 						}
-						if (yvel < 0) {							
+						if (yvel < 0) {
 							xvel *= 0.7;
 							if (yvel < 4) {
 								yvel -= 3;
 							}
 						}
+						if (ball.type == 14) 
+						{
+							scoreInt += 900;
+						}
+						if (ball.type == 15)
+						{
+							Health = 300;
+						}
 					}
-					cout << ball.type;
+					if (enemies.size() > 0) {
+						it = enemies.erase(it);
+					}
+					else
+					{
+						it = enemies.begin();
+					}
+
 					scoreInt += 100;
-					if (Health < 300) {
+					if (Health < 300) 
+					{
 						Health += 100;
 					}
 					canShoot = true;
@@ -290,22 +305,6 @@ namespace Tmpl8
 
 			if (click == 0 || !canShoot) //during release
 			{
-				/*if (ballX - ballR < 0) {
-					xvel *= -1;
-					ballX = 0 + ballR;
-				}
-				if (ballX + ballR > ScreenWidth) {
-					xvel *= -1;
-					ballX = ScreenWidth - ballR;
-				}
-				if (ballY - ballR < 0) {
-					yvel *= -1;
-					ballY = 0 + ballR;
-				}
-				if (ballY + ballR > ScreenHeight) {
-					yvel *= -1;
-					ballY = ScreenHeight - ballR;
-				}*/
 				yvel += 0.03; //Gravity
 				enemyX -= xvel; //camX
 				ememyY -= yvel; //camY

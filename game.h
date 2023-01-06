@@ -31,24 +31,24 @@ namespace Tmpl8 {
 		void MouseMove(int x, int y) { mouseX = x, mouseY = y; }
 		void KeyUp(int key) { /* implement if you want to handle keys */ }
 		void KeyDown(int key) { /* implement if you want to handle keys */ }
-		double delx, dely, angle, xvel, yvel, xpyt, ypyt, xypyt, minSpeed = 0.5, maxSpeed = 4; //velocity and angle calculation variables
 		int ballX = 1280 / 2, ballY = 720 / 2, ballR = 30; //x and y for ballz
-		int enemyX = 150, ememyY = -550;
-		bool ballsAdded = false;
-		int gameState = 0; //gameState for menu, game and endscreen	
 		Surface* screen;
 
+	private:		
+		void Kill();
+		std::vector<Ball> enemies;
 
-	private:
 		int mouseX, mouseY, click, release;//mouse variables
 		float shakeIntensity = 8; // intensity of the shake
 		int shakeDuration = 0; // duration of the shake, in frames
 		int shakeTimer = 0; // make the shake less intense every frame
-		int scoreInt = 0;
-		int highScoreInt = 0;
+		int gameState = 0; //gameState for menu, game and endscreen	
+		bool ballsAdded = false;
+		int camX = 150, camY = -550;
+		double delx, dely, angle, xvel, yvel, xpyt, ypyt, xypyt, minSpeed = 0.5, maxSpeed = 4; //velocity, angle and max/minSpeed calculation variables
+		int scoreInt = 0; //Integer value of the score
+		int highScoreInt = 0;//Integer value of the highscore
 		bool canShoot = true;
-		void Kill();
-		std::vector<Ball> enemies;
 		float Health = 300;
 	};
 }; // namespace Tmpl8

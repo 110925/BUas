@@ -34,8 +34,13 @@ namespace Tmpl8 {
 		int ballX = 1280 / 2, ballY = 720 / 2, ballR = 30; //x and y for ballz
 		Surface* screen;
 
+
 	private:		
-		void Kill();
+		void Circle(Surface* s, float x, float y, float r);
+		void Kill();		
+		void handleControls();
+		void playerInteraction();
+		void enemyDeletion();
 		std::vector<Ball> enemies;
 
 		int mouseX, mouseY, click, release;//mouse variables

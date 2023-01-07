@@ -222,7 +222,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyDeletion.cpp" />
     <ClCompile Include="game.cpp" />
+    <ClCompile Include="Controls.cpp" />
+    <ClCompile Include="PlayerInteraction.cpp" />
     <ClCompile Include="surface.cpp" />
     <ClCompile Include="template.cpp" />
   </ItemGroup>

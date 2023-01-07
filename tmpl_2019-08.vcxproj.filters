@@ -8,6 +8,10 @@
     <ClCompile Include="template.cpp">
       <Filter>template code</Filter>
     </ClCompile>
+    <ClCompile Include="Controls.cpp" />
+    <ClCompile Include="PlayerInteraction.cpp" />
+    <ClCompile Include="EnemyDeletion.cpp" />
+    <ClCompile Include="Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="game.h" />

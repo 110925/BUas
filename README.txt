@@ -1,4 +1,5 @@
-Bounce Up is a 2D game where you will need to shoot your ball onto other balls which shoots your ball into the air.
+Bounce Up! is a 2D game made using tmpl8 (https://www.3dgep.com/wp-content/uploads/2019/08/TheTemplate.zip). 
+In this game you will need to shoot your ball onto other balls which shoots your ball into the air.
 Miss a ball and you will fall down into the lava. 
 Make sure to aim fast or your timer will run out which makes you lose the game. 
 

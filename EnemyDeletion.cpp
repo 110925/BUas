@@ -8,16 +8,20 @@ namespace Tmpl8 {
 		{
 			auto& ball = *it;
 
-			if (ball.type <= 3) {//Killer (red) enemy
+			if (ball.type <= 3) //Killer (red) enemy
+			{
 				ball.color = 0xff0000;
 			}
-			if (ball.type >= 4 && ball.type <= 13) {//Normal (green) enemy
+			if (ball.type >= 4 && ball.type <= 13) //Normal (green) enemy
+			{
 				ball.color = 0x00ff00;
 			}
-			if (ball.type == 14) {//Golden (gold) enemy
+			if (ball.type == 14) //Golden (gold) enemy
+			{
 				ball.color = 0xffff00;
 			}
-			if (ball.type == 15) { //Healer (white) enemy
+			if (ball.type == 15) //Healer (white) enemy
+			{ 
 				ball.color = 0xffffff;
 			}
 
@@ -34,16 +38,20 @@ namespace Tmpl8 {
 				if (ball.type >= 4 && ball.type <= 15)
 				{
 					//Makes Player bounce up on contact with other balls
-					if (yvel > 0) {
+					if (yvel > 0) 
+					{
 						yvel *= -1;
 						xvel *= 0.7;
-						if (yvel < 4) {
+						if (yvel < 4) 
+						{
 							yvel -= 3;
 						}
 					}
-					if (yvel < 0) {
+					if (yvel < 0) 
+					{
 						xvel *= 0.7;
-						if (yvel < 4) {
+						if (yvel < 4) 
+						{
 							yvel -= 3;
 						}
 					}
@@ -62,7 +70,8 @@ namespace Tmpl8 {
 				}
 
 				//Should a ball be erased or not?
-				if (enemies.size() > 0) {
+				if (enemies.size() > 0) 
+				{
 					it = enemies.erase(it);
 				}
 				else

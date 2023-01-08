@@ -55,17 +55,20 @@ namespace Tmpl8
 	void Game::Tick(float deltaTime)
 	{
 		screen->Clear(0); //clear the graphics window
-		std::cout << "Timer:" << deltaTime;
+
 		//Menu
-		if (gameState == 0) {
+		if (gameState == 0) 
+		{
 			screen->Print("Click anywhere to play!", ScreenWidth / 2 - 100, ScreenHeight / 2 - 60, 0xffffff);
 			Logo.Draw(screen, 170, 100);
 
 			//Going to the next gameState
-			if (click) {
+			if (click) 
+			{
 				gameState = 1; 
 				canShoot = false;
-				if (enemies.size() == 0) {
+				if (enemies.size() == 0) 
+				{
 					Init();
 				}
 			}
@@ -78,14 +81,16 @@ namespace Tmpl8
 		}
 
 		//Game
-		if (gameState == 1) {
+		if (gameState == 1) 
+		{
 
 			//CameraShake
 			float shakeOffsetX = shakeIntensity * sin(shakeTimer);
 			float shakeOffsetY = shakeIntensity * cos(shakeTimer);
-			if (shakeDuration > 0) {
-				camX += shakeOffsetX;
-				camY+= shakeOffsetY;
+			if (shakeDuration > 0) 
+			{
+				camX += shakeOffsetX * deltaTime/1000;
+				camY+= shakeOffsetY * deltaTime/1000;
 				shakeDuration--;
 				shakeTimer--;
 			}

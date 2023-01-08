@@ -31,7 +31,7 @@ namespace Tmpl8 {
 				xpyt = delx;
 				ypyt = dely;
 			}
-			xypyt = sqrt(xpyt * xpyt + ypyt * ypyt) / 200;
+			xypyt = sqrt(xpyt * xpyt + ypyt * ypyt) / 300;
 
 			//max and min speed
 			if (xypyt > maxSpeed)

@@ -22,17 +22,20 @@ namespace Tmpl8 {
 	{
 		Health -= 0.3; //Health constantly going down
 		screen->Bar(ScreenWidth / 2 - 150, 10, (ScreenWidth / 2 - 150) + Health, 40, 0xff0000); //Show Health
-		if (Health <= 0) { //When no more health left... die...
+		if (Health <= 0) //When no more health left... die...
+		{ 
 			Kill();
 		}
 
 		//On hit with the lava
-		if (ballY + ballR > camY + 1000 && ballX < camX || ballY + ballR > camY + 1000 && ballX > camX + 1000) {
+		if (ballY + ballR > camY + 1000 && ballX < camX || ballY + ballR > camY + 1000 && ballX > camX + 1000) 
+		{
 			Kill();
 		}
 
 		//On hit with the floor;
-		if (ballY + ballR > camY + 1000 && ballX > camX && ballX < camX + 1000) {
+		if (ballY + ballR > camY + 1000 && ballX > camX && ballX < camX + 1000) 
+		{
 			yvel *= -0.1;
 			yvel-=200;
 			canShoot = true;

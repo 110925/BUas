@@ -15,7 +15,8 @@ namespace Tmpl8
 	}
 
 	//Give the correct offset to the balls
-	void Ball::SetNewOffset(float xOffset, float yOffset, float rOffset) {
+	void Ball::SetNewOffset(float xOffset, float yOffset, float rOffset) 
+	{
 		this->x = xOrignal + xOffset;
 		this->y = yOrignal + yOffset;
 		this->r = rOrignal + rOffset;
@@ -42,7 +43,8 @@ namespace Tmpl8
 		da = game->ballX - x;
 		db = game->ballY - y;
 		dc = sqrt(da * da + db * db);
-		if (dc < r + game->ballR) {
+		if (dc < r + game->ballR) 
+		{
 			return 1;
 		}
 		return 0;

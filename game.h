@@ -44,7 +44,7 @@ namespace Tmpl8 {
 		std::vector<Ball> enemies;
 
 		int mouseX, mouseY, click, release;//mouse variables
-		float shakeIntensity = 8; // intensity of the shake
+		float shakeIntensity = 1200; // intensity of the shake
 		int shakeDuration = 0; // duration of the shake, in frames
 		int shakeTimer = 0; // make the shake less intense every frame
 		int gameState = 0; //gameState for menu, game and endscreen	

@@ -4,8 +4,10 @@
 #include "template.h"
 
 namespace Tmpl8 {
-	void Game::handleControls()
+	void Game::handleControls(float deltaTime)
 	{
+		deltaTime /= 1000;
+
 		if (click && !release && canShoot)
 		{
 			Health -= 0.5; //Health goes down faster
@@ -15,8 +17,8 @@ namespace Tmpl8 {
 			angle = atan2(dely, delx); //calculates the angle
 
 			//calculates the correct velocity 
-			xvel = cos(angle) * 5;
-			yvel = sin(angle) * 5;
+			xvel = cos(angle) * 1000;
+			yvel = sin(angle) * 1000;
 
 			//calculates the speed using the pythagorean theorem
 			if (delx < 0 || dely < 0)
@@ -54,9 +56,9 @@ namespace Tmpl8 {
 
 		if (click == 0 || !canShoot) //during release
 		{
-			yvel += 0.03; //Gravity
-			camX -= xvel; //Reset camX
-			camY -= yvel; //Reset camY
+			yvel += 5; //Gravity
+			camX -= xvel * deltaTime; //Reset camX
+			camY -= yvel * deltaTime; //Reset camY
 		}
 	}
 }

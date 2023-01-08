@@ -38,7 +38,7 @@ namespace Tmpl8 {
 	private:		
 		void Circle(Surface* s, float x, float y, float r);
 		void Kill();		
-		void handleControls();
+		void handleControls(float deltaTime);
 		void playerInteraction();
 		void enemyDeletion();
 		std::vector<Ball> enemies;

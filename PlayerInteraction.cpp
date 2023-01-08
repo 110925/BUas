@@ -34,7 +34,7 @@ namespace Tmpl8 {
 		//On hit with the floor;
 		if (ballY + ballR > camY + 1000 && ballX > camX && ballX < camX + 1000) {
 			yvel *= -0.1;
-			yvel--;
+			yvel-=200;
 			canShoot = true;
 		}
 	}

@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <random>
 #include <sstream>
+#include <iostream>
 
 using namespace std;
 namespace Tmpl8
@@ -54,7 +55,7 @@ namespace Tmpl8
 	void Game::Tick(float deltaTime)
 	{
 		screen->Clear(0); //clear the graphics window
-
+		std::cout << "Timer:" << deltaTime;
 		//Menu
 		if (gameState == 0) {
 			screen->Print("Click anywhere to play!", ScreenWidth / 2 - 100, ScreenHeight / 2 - 60, 0xffffff);
@@ -107,7 +108,7 @@ namespace Tmpl8
 			playerInteraction();
 
 			//This is the function for all the controls
-			handleControls();
+			handleControls(deltaTime);
 		}
 	}
 };
